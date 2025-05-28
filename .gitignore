@@ -1,0 +1,42 @@
+# Arquivos de ambiente
+.env
+.env.local
+.env.production
+
+# Binários do Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Arquivo binário gerado pelo Go
+github-octokit-poc
+main
+
+# Arquivos de teste
+*.test
+
+# Cache de módulos do Go
+go.sum
+
+# Arquivos do editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Dependências do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# Arquivos de output
+/output
