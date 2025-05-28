@@ -1,150 +1,158 @@
-# POC Octokit em Go
+# 🚀 GitHub Repository Analyzer
 
-Esta é uma prova de conceito demonstrando como usar a biblioteca go-github (equivalente ao Octokit) para interagir com a API do GitHub em Go.
+Ferramenta completa para análise de repositórios GitHub desenvolvida em Go. Extrai informações detalhadas, estatísticas e gera relatórios abrangentes sobre qualquer repositório público.
 
-## Pré-requisitos
+## ✨ Funcionalidades
 
-1. **Go 1.21+** instalado
-2. **Token de acesso do GitHub** com as seguintes permissões:
-   - `repo` (para acessar repositórios)
-   - `user` (para informações do usuário)
-   - `public_repo` (para repositórios públicos)
+- 🔍 **Análise completa** de repositórios GitHub
+- 📊 **Estatísticas detalhadas** (stars, forks, issues, PRs)
+- 👥 **Análise de colaboradores** e contribuições
+- 💻 **Distribuição de linguagens** de programação
+- 🏥 **Score de saúde** do repositório
+- 📈 **Métricas de atividade** (commits, issues, PRs)
+- 📋 **Relatórios** em JSON e texto formatado
+- 🎯 **Interface CLI** intuitiva
+- ⚙️ **Configuração flexível** via .env
 
-## Configuração
+## 🛠️ Instalação
 
-1. **Gere um token de acesso pessoal no GitHub:**
-   - Vá para Settings → Developer settings → Personal access tokens → Tokens (classic)
-   - Clique em "Generate new token"
-   - Selecione os escopos necessários (`repo`, `user`, `public_repo`)
-   - Copie o token gerado
+### Pré-requisitos
 
-2. **Configure o arquivo .env:**
-   ```bash
-   # Copie o arquivo de exemplo
-   cp .env.example .env
-   
-   # Edite o arquivo .env e adicione seu token
-   # GITHUB_TOKEN=ghp_seu_token_aqui
-   ```
+- **Go 1.21+** instalado
+- **Token de acesso do GitHub** ([como obter](https://github.com/settings/tokens))
 
-   **Ou use variáveis de ambiente tradicionais:**
-   ```bash
-   export GITHUB_TOKEN="seu_token_aqui"
-   ```
+### Setup rápido
 
-## Instalação e Execução
+```bash
+# 1. Clone o projeto
+git clone <seu-repositorio>
+cd github-octokit-poc
 
-1. **Clone ou crie o projeto:**
-   ```bash
-   mkdir github-octokit-poc
-   cd github-octokit-poc
-   ```
+# 2. Configure o token
+cp .env.example .env
+# Edite o .env e adicione seu GITHUB_TOKEN
 
-2. **Copie os arquivos:** `main.go`, `go.mod`, `.env.example`, `.gitignore`
+# 3. Baixe dependências
+go mod tidy
 
-3. **Configure o ambiente:**
-   ```bash
-   # Copie e configure o .env
-   cp .env.example .env
-   # Edite o .env com seu token do GitHub
-   ```
+# 4. Execute
+go run main.go https://github.com/kubernetes/kubernetes
+```
 
-4. **Baixe as dependências:**
-   ```bash
-   go mod tidy
-   ```
+## 🎮 Como usar
 
-5. **Execute a POC:**
-   ```bash
-   go run main.go
-   ```
+### Formato básico
+```bash
+go run main.go [opções] [url-do-repositório]
+```
 
-## Estrutura do Projeto
+### 📝 Exemplos práticos
+
+**Analisar repositório por URL completa:**
+```bash
+go run main.go https://github.com/kubernetes/kubernetes
+```
+
+**Formato owner/repo:**
+```bash
+go run main.go kubernetes/kubernetes
+```
+
+**URL SSH também funciona:**
+```bash
+go run main.go git@github.com:facebook/react.git
+```
+
+**Usando flags específicas:**
+```bash
+go run main.go -o microsoft -r vscode
+```
+
+**Diretório de saída customizado:**
+```bash
+go run main.go --output /tmp/analise https://github.com/golang/go
+```
+
+**Ver ajuda:**
+```bash
+go run main.go --help
+```
+
+### 🎛️ Opções disponíveis
+
+| Flag | Descrição | Exemplo |
+|------|-----------|---------|
+| `-u, --url` | URL do repositório | `--url https://github.com/owner/repo` |
+| `-o, --owner` | Proprietário do repositório | `--owner kubernetes` |
+| `-r, --repo` | Nome do repositório | `--repo kubernetes` |
+| `--output` | Diretório de saída | `--output /tmp/results` |
+| `-h, --help` | Mostrar ajuda | `--help` |
+| `-v, --version` | Mostrar versão | `--version` |
+
+### 🌐 Formatos de URL suportados
+
+✅ `https://github.com/owner/repo`  
+✅ `https://github.com/owner/repo.git`  
+✅ `git@github.com:owner/repo.git`  
+✅ `owner/repo`  
+
+## 📁 Estrutura do projeto
 
 ```
 github-octokit-poc/
-├── main.go              # Ponto de entrada da aplicação
-├── go.mod               # Dependências do Go
-├── .env.example         # Template de configuração
-├── .env                 # Configurações locais (não commitado)
-├── .gitignore           # Arquivos ignorados pelo Git
-├── github/
-│   └── client.go        # Cliente GitHub configurável
+├── main.go                    # 🎯 Ponto de entrada
+├── cmd/
+│   └── runner.go             # 🎬 Orquestrador principal
+├── internal/
+│   ├── cli/
+│   │   └── parser.go         # 🎛️ Parser de argumentos CLI
+│   ├── config/
+│   │   └── config.go         # ⚙️ Gerenciamento de configurações
+│   ├── output/
+│   │   └── handler.go        # 💾 Gerenciamento de arquivos
+│   └── insights/
+│       └── display.go        # 🔍 Exibição de insights
 ├── extractor/
-│   └── repository.go    # Extrator completo de dados
+│   └── repository.go         # 📥 Extração de dados GitHub
+├── github/
+│   └── clients.go            # 🐙 Cliente GitHub
 ├── utils/
-│   └── analyzer.go      # Analisador e gerador de relatórios
-└── README.md            # Este arquivo
+│   └── analyzer.go           # 🧮 Análises e relatórios
+└── README.md                 # 📖 Documentação
 ```
 
-## Variáveis de Ambiente Disponíveis
+## ⚙️ Configuração
+
+### Arquivo .env
+
+```bash
+# Obrigatório
+GITHUB_TOKEN=ghp_seu_token_aqui
+
+# Opcionais
+GITHUB_DEFAULT_USER=kubernetes
+GITHUB_DEFAULT_REPO=kubernetes
+OUTPUT_DIR=output
+DEBUG=false
+```
+
+### Variáveis de ambiente
 
 | Variável | Obrigatória | Descrição |
 |----------|-------------|-----------|
-| `GITHUB_TOKEN` | ✅ Sim | Token de acesso pessoal do GitHub |
-| `GITHUB_DEFAULT_USER` | ❌ Não | Usuário padrão para buscar repositórios |
-| `GITHUB_DEFAULT_REPO` | ❌ Não | Repositório padrão para buscar eventos |
-| `GITHUB_API_BASE_URL` | ❌ Não | URL base para GitHub Enterprise |
-| `GITHUB_REQUEST_TIMEOUT` | ❌ Não | Timeout das requisições (segundos) |
-| `GITHUB_MAX_PER_PAGE` | ❌ Não | Máximo de itens por página |
-| `DEBUG` | ❌ Não | Modo debug (true/false) |
+| `GITHUB_TOKEN` | ✅ | Token de acesso do GitHub |
+| `GITHUB_DEFAULT_USER` | ❌ | Usuário padrão |
+| `GITHUB_DEFAULT_REPO` | ❌ | Repositório padrão |
+| `GITHUB_API_BASE_URL` | ❌ | URL para GitHub Enterprise |
+| `OUTPUT_DIR` | ❌ | Diretório de saída padrão |
+| `DEBUG` | ❌ | Modo debug (true/false) |
 
-### ✅ Funcionalidades Implementadas
-
-1. **Arquitetura modular** com separação de responsabilidades
-2. **Extração completa de dados** do repositório kubernetes/kubernetes:
-   - Informações básicas e metadados
-   - Estatísticas (stars, forks, watchers, issues)
-   - Configurações e permissões
-   - Distribuição de linguagens de programação
-   - Lista completa de colaboradores
-   - Issues e Pull Requests recentes
-   - Histórico de releases
-   - Commits recentes
-   - Eventos de atividade
-   - Rate limits da API
-3. **Análise inteligente** dos dados extraídos:
-   - Score de saúde do repositório
-   - Métricas de atividade (commits, issues, PRs)
-   - Análise de colaboradores (top contributors, core team)
-   - Detecção de issues obsoletas
-   - Tendências de manutenção
-4. **Relatórios detalhados** em múltiplos formatos:
-   - Resumo na tela com insights
-   - Arquivo JSON com dados completos
-   - Relatório texto formatado
-5. **Configuração via .env** para facilitar o desenvolvimento
-6. **Suporte a GitHub Enterprise** (configurável via .env)
-
-### 📋 Principais operações da API
-
-**Módulo GitHub Client (`github/client.go`):**
-- Configuração automática com OAuth2
-- Suporte a GitHub Enterprise
-- Gerenciamento de rate limits
-
-**Módulo Extrator (`extractor/repository.go`):**
-- `ExtractRepositoryData()` - Extração completa de dados
-- `client.Repositories.Get()` - Informações básicas
-- `client.Repositories.ListLanguages()` - Linguagens de programação
-- `client.Repositories.ListContributors()` - Colaboradores
-- `client.Issues.ListByRepo()` - Issues do repositório
-- `client.PullRequests.List()` - Pull requests
-- `client.Repositories.ListReleases()` - Releases
-- `client.Repositories.ListCommits()` - Commits
-- `client.Activity.ListRepositoryEvents()` - Eventos
-- `client.RateLimits()` - Verificação de limites
-
-**Módulo Analisador (`utils/analyzer.go`):**
-- `AnalyzeLanguages()` - Distribuição de linguagens
-- `AnalyzeActivity()` - Métricas de atividade
-- `AnalyzeContributors()` - Análise de colaboradores
-- `AnalyzeHealth()` - Score de saúde do repositório
-- `GenerateReport()` - Relatório completo formatado
-
-## Exemplo de saída
+## 📊 Exemplo de saída
 
 ```
+🚀 Iniciando GitHub Repository Analyzer
+✅ Cliente GitHub configurado com sucesso
+🎯 Alvo (via CLI): kubernetes/kubernetes
 🔍 Iniciando extração completa do repositório kubernetes/kubernetes
 📋 Extraindo informações básicas...
 💻 Extraindo linguagens...
@@ -177,73 +185,97 @@ github-octokit-poc/
    Go: 96.2%
    Shell: 1.8%
    Python: 1.2%
-   Makefile: 0.5%
-   Dockerfile: 0.3%
 
 👥 COLABORADORES: 3847 encontrados
-🎯 ISSUES RECENTES: 10 encontradas
+🎯 ISSUES RECENTES: 8 encontradas
 🔄 PULL REQUESTS: 10 encontrados
 🚀 RELEASES: 10 encontrados
-📝 COMMITS RECENTES: 10 encontrados
-⚡ EVENTOS RECENTES: 10 encontrados
-
-📊 RATE LIMITS:
-   Core API: 4850/5000 (reset em 16:45:30)
-
-⏱️  Extração concluída em: 8.234567s
-================================================================================
-
-📊 RELATÓRIO COMPLETO DE ANÁLISE
-================================================================================
-
-🏥 SAÚDE DO REPOSITÓRIO
-----------------------------------------
-Score de saúde: 95.0/100
-Status: Excelente
-Último commit: 0 dias atrás
-Último release: 15 dias atrás
-Issues obsoletas: 2
-Ratio de issues abertas: 45.0%
 
 💾 Salvando arquivos:
-   📊 Dados completos: kubernetes_kubernetes_data_20250528_143045.json
-   📋 Relatório: kubernetes_kubernetes_report_20250528_143045.txt
+   📊 Dados completos: output/20250528_143045/kubernetes_kubernetes_data.json
+   📋 Relatório: output/20250528_143045/kubernetes_kubernetes_report.txt
 ✅ JSON salvo com sucesso!
 ✅ Relatório salvo com sucesso!
+
+================================================================================
+🔍 INSIGHTS ESPECÍFICOS
+================================================================================
+
+👑 TOP 5 COLABORADORES:
+   1. k8s-ci-robot (12,567 contribuições)
+   2. liggitt (4,234 contribuições)
+   3. brendandburns (3,891 contribuições)
+   4. smarterclayton (3,456 contribuições)
+   5. wojtek-t (2,987 contribuições)
+
+💻 LINGUAGEM DOMINANTE: Go (96.2%)
+
+🚀 RELEASE MAIS RECENTE: v1.30.1
+   📅 Publicado em: 15/05/2025
+   👤 Por: k8s-release-robot
 ```
 
-## Próximos passos
+## 🔧 Build para produção
 
-Para expandir esta POC, você pode implementar:
+```bash
+# Build do binário
+go build -o github-analyzer main.go
 
-- ✨ **Webhooks** para receber eventos do GitHub
-- 📊 **Análise de dados** dos repositórios
-- 🔄 **Sincronização** com banco de dados local
-- 📈 **Relatórios** de atividade
-- 🤖 **Automação** de tarefas no GitHub
+# Executar o binário
+./github-analyzer https://github.com/kubernetes/kubernetes
 
-## Documentação útil
+# Cross-compilation (exemplo para Windows)
+GOOS=windows GOARCH=amd64 go build -o github-analyzer.exe main.go
+```
 
-- [go-github Documentation](https://pkg.go.dev/github.com/google/go-github/v57/github)
-- [GitHub API Documentation](https://docs.github.com/en/rest)
-- [OAuth2 em Go](https://pkg.go.dev/golang.org/x/oauth2)
+## 🚀 Próximos passos
 
-## Troubleshooting
+- [ ] 📊 Dashboard web interativo
+- [ ] 🔄 Comparação entre repositórios
+- [ ] 📈 Análise histórica de crescimento
+- [ ] 🔔 Sistema de notificações
+- [ ] 🐳 Container Docker
+- [ ] 📦 Packaging para diferentes OS
+
+## 🛟 Troubleshooting
 
 **Erro de autenticação:**
-- Verifique se o token está correto no arquivo `.env`
-- Confirme que a variável `GITHUB_TOKEN` está definida
-- Teste o token no navegador: https://api.github.com/user (com header Authorization: token SEU_TOKEN)
-
-**Arquivo .env não encontrado:**
-- Copie o `.env.example` para `.env`
-- O programa funcionará com variáveis de ambiente do sistema se o .env não existir
+```bash
+# Verificar se o token está correto
+curl -H "Authorization: token SEU_TOKEN" https://api.github.com/user
+```
 
 **Rate limiting:**
-- A API do GitHub tem limites de taxa
-- Use `client.RateLimits()` para verificar o status
-- Considere implementar retry com backoff
+```bash
+# Verificar limits restantes
+curl -H "Authorization: token SEU_TOKEN" https://api.github.com/rate_limit
+```
 
 **Dependências:**
-- Execute `go mod tidy` se houver problemas com módulos
-- Verifique se está usando Go 1.21 ou superior
+```bash
+# Limpar e reinstalar módulos
+go clean -modcache
+go mod tidy
+```
+
+## 📚 Documentação adicional
+
+- [GitHub API Documentation](https://docs.github.com/en/rest)
+- [go-github Library](https://pkg.go.dev/github.com/google/go-github/v57/github)
+- [OAuth2 em Go](https://pkg.go.dev/golang.org/x/oauth2)
+
+## 🤝 Contribuindo
+
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/nova-funcionalidade`)
+3. Commit suas mudanças (`git commit -am 'Adiciona nova funcionalidade'`)
+4. Push para a branch (`git push origin feature/nova-funcionalidade`)
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+---
+
+**Desenvolvido com ❤️ em Go**

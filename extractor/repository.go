@@ -489,9 +489,9 @@ func extractRateLimit(client *ghclient.Client, data *RepositoryData) error {
 
 // PrintSummary imprime um resumo dos dados extraídos
 func (rd *RepositoryData) PrintSummary() {
-	strings.Repeat("=", 80)
+	fmt.Println("\n" + strings.Repeat("=", 80))
 	fmt.Printf("📊 RESUMO DA EXTRAÇÃO - %s\n", rd.BasicInfo.FullName)
-	strings.Repeat("=", 80)
+	fmt.Println(strings.Repeat("=", 80))
 	
 	fmt.Printf("🏷️  Nome: %s\n", rd.BasicInfo.Name)
 	fmt.Printf("👤 Proprietário: %s\n", rd.BasicInfo.Owner)
@@ -532,7 +532,7 @@ func (rd *RepositoryData) PrintSummary() {
 	}
 	
 	fmt.Printf("\n⏱️  Extração concluída em: %s\n", rd.ExtractionMeta.Duration)
-	strings.Repeat("=", 80)
+	fmt.Println(strings.Repeat("=", 80))
 }
 
 // SaveToJSON salva os dados em um arquivo JSON
